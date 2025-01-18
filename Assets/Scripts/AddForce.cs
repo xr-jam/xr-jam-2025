@@ -3,7 +3,6 @@ using UnityEngine;
 public class AddForce : MonoBehaviour
 {
     public float surfaceSpeed = 1f;  // Speed of surface movement
-    public Rigidbody objectToMove;   // Object on top of the surface
     private Rigidbody rb;
 
     private void Start()
@@ -20,7 +19,7 @@ public class AddForce : MonoBehaviour
         {
             // Apply force in the direction of the surface movement
             Vector3 movementDirection = -transform.forward;  // Direction the belt moves
-            objectToMove.velocity = movementDirection * surfaceSpeed;
+            rb.velocity = movementDirection * surfaceSpeed;
         }
     }
 }
