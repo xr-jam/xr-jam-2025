@@ -9,13 +9,18 @@ public class TrashManager : MonoBehaviour
 
     [SerializeField]
     float timeToSpawn;
+    private float timeToSpawnDelta;
     public float trashSpeed = 1f;
+    private float targetSpeedIncrease = 5f;
 
     float spawnTimer = 0f;
+    float secondTimer = 0f;
 
     private void Start()
     {
         trashSpawner.trashManager = this;
+        targetSpeedIncrease = trashSpeed * 5 / 300;
+        timeToSpawnDelta = (timeToSpawn - timeToSpawn * 0.2f) / 300;
     }
 
     void Update()
@@ -26,6 +31,14 @@ public class TrashManager : MonoBehaviour
         {
             trashSpawner.SpawnRandom();
             spawnTimer = 0f;
+        }
+
+        secondTimer += Time.deltaTime;
+        if (secondTimer >= 1f)
+        {
+            trashSpeed += targetSpeedIncrease;
+            timeToSpawn -= timeToSpawnDelta;
+            secondTimer = 0f;
         }
     }
 }
