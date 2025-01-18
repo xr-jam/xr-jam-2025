@@ -18,7 +18,7 @@ public class AddForce : MonoBehaviour
         if (collision.gameObject.CompareTag("ConveyorBelt"))
         {
             // Apply force in the direction of the surface movement
-            Vector3 movementDirection = -transform.forward;  // Direction the belt moves
+            Vector3 movementDirection = -collision.gameObject.transform.forward;  // Direction the belt moves
             rb.velocity = movementDirection * surfaceSpeed;
         }
     }
