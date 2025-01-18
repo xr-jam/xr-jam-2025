@@ -29,17 +29,30 @@ public class ScreenFlash : MonoBehaviour
         {
             StopCoroutine(fadeCoroutine);
         }
-        fadeCoroutine = StartCoroutine(IncreaseAlphaOverTime(fadeDuration, 0f, 0.2f));
-        fadeCoroutine = StartCoroutine(IncreaseAlphaOverTime(fadeDuration, 0.2f, 0f));
+        fadeCoroutine = StartCoroutine(IncreaseAlphaOverTime(fadeDuration, 0f, 0.2f, Color.red));
+        fadeCoroutine = StartCoroutine(IncreaseAlphaOverTime(fadeDuration, 0.2f, 0f, Color.red));
+
+    }
+    public void OnRightChoice()
+    {
+        if (fadeCoroutine != null)
+        {
+            StopCoroutine(fadeCoroutine);
+        }
+        fadeCoroutine = StartCoroutine(IncreaseAlphaOverTime(fadeDuration, 0f, 0.2f, Color.green));
+        fadeCoroutine = StartCoroutine(IncreaseAlphaOverTime(fadeDuration, 0.2f, 0f, Color.green));
 
     }
 
-    private IEnumerator IncreaseAlphaOverTime(float duration, float startAlpha, float endAlpha)
+    private IEnumerator IncreaseAlphaOverTime(float duration, float startAlpha, float endAlpha, Color specificColor)
     {
         float elapsedTime = 0f;
 
         // Get the current color and alpha
         Color color = imageMaterial.color;
+        color = specificColor;
+        color.a = startAlpha;
+        imageMaterial.color = color;
 
         while (elapsedTime < duration)
         {
