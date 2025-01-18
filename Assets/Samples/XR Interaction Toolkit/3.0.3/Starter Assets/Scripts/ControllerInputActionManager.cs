@@ -36,22 +36,9 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
         [SerializeField]
         [Tooltip("Near-Far Interactor used for distant/ray manipulation. Use this or Ray Interactor, not both.")]
         NearFarInteractor m_NearFarInteractor;
-        
-        [SerializeField]
-        [Tooltip("The interactor used for teleportation.")]
-        XRRayInteractor m_TeleportInteractor;
 
         [Space]
         [Header("Controller Actions")]
-
-        [SerializeField]
-        [Tooltip("The reference to the action to start the teleport aiming mode for this controller.")]
-        [FormerlySerializedAs("m_TeleportModeActivate")]
-        InputActionReference m_TeleportMode;
-
-        [SerializeField]
-        [Tooltip("The reference to the action to cancel the teleport aiming mode for this controller.")]
-        InputActionReference m_TeleportModeCancel;
 
         [SerializeField]
         [Tooltip("The reference to the action of continuous turning the XR Origin with this controller.")]
@@ -60,10 +47,6 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
         [SerializeField]
         [Tooltip("The reference to the action of snap turning the XR Origin with this controller.")]
         InputActionReference m_SnapTurn;
-
-        [SerializeField]
-        [Tooltip("The reference to the action of moving the XR Origin with this controller.")]
-        InputActionReference m_Move;
 
         [SerializeField]
         [Tooltip("The reference to the action of scrolling UI with this controller.")]
@@ -79,10 +62,6 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
         [SerializeField]
         [Tooltip("If true, continuous turn will be enabled. If false, snap turn will be enabled. Note: If smooth motion is enabled and enable strafe is enabled on the continuous move provider, turn will be overriden in favor of strafe.")]
         bool m_SmoothTurnEnabled;
-        
-        [SerializeField]
-        [Tooltip("With the Near-Far Interactor, if true, teleport will be enabled during near interaction. If false, teleport will be disabled during near interaction.")]
-        bool m_NearFarEnableTeleportDuringNearInteraction = true;
 
         [Space]
         [Header("UI Settings")]
@@ -141,7 +120,6 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             {
                 m_NearFarInteractor.uiHoverEntered.AddListener(OnUIHoverEntered);
                 m_NearFarInteractor.uiHoverExited.AddListener(OnUIHoverExited);
-                m_BindingsGroup.AddBinding(m_NearFarInteractor.selectionRegion.Subscribe(OnNearFarSelectionRegionChanged));
             }
             
             if (m_RayInteractor != null)
@@ -150,28 +128,6 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
                 m_RayInteractor.selectExited.AddListener(OnRaySelectExited);
                 m_RayInteractor.uiHoverEntered.AddListener(OnUIHoverEntered);
                 m_RayInteractor.uiHoverExited.AddListener(OnUIHoverExited);
-            }
-
-            var teleportModeAction = GetInputAction(m_TeleportMode);
-            if (teleportModeAction != null)
-            {
-                teleportModeAction.performed += OnStartTeleport;
-                teleportModeAction.performed += OnStartLocomotion;
-                teleportModeAction.canceled += OnCancelTeleport;
-                teleportModeAction.canceled += OnStopLocomotion;
-            }
-
-            var teleportModeCancelAction = GetInputAction(m_TeleportModeCancel);
-            if (teleportModeCancelAction != null)
-            {
-                teleportModeCancelAction.performed += OnCancelTeleport;
-            }
-
-            var moveAction = GetInputAction(m_Move);
-            if (moveAction != null)
-            {
-                moveAction.started += OnStartLocomotion;
-                moveAction.canceled += OnStopLocomotion;
             }
 
             var turnAction = GetInputAction(m_Turn);
@@ -206,29 +162,6 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
                 m_RayInteractor.uiHoverEntered.RemoveListener(OnUIHoverEntered);
                 m_RayInteractor.uiHoverExited.RemoveListener(OnUIHoverExited);
             }
-
-            var teleportModeAction = GetInputAction(m_TeleportMode);
-            if (teleportModeAction != null)
-            {
-                teleportModeAction.performed -= OnStartTeleport;
-                teleportModeAction.performed -= OnStartLocomotion;
-                teleportModeAction.canceled -= OnCancelTeleport;
-                teleportModeAction.canceled -= OnStopLocomotion;
-            }
-
-            var teleportModeCancelAction = GetInputAction(m_TeleportModeCancel);
-            if (teleportModeCancelAction != null)
-            {
-                teleportModeCancelAction.performed -= OnCancelTeleport;
-            }
-
-            var moveAction = GetInputAction(m_Move);
-            if (moveAction != null)
-            {
-                moveAction.started -= OnStartLocomotion;
-                moveAction.canceled -= OnStopLocomotion;
-            }
-
             var turnAction = GetInputAction(m_Turn);
             if (turnAction != null)
             {
@@ -242,48 +175,6 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
                 snapTurnAction.started -= OnStartLocomotion;
                 snapTurnAction.canceled -= OnStopLocomotion;
             }
-        }
-
-        void OnStartTeleport(InputAction.CallbackContext context)
-        {
-            m_PostponedDeactivateTeleport = false;
-
-            if (m_TeleportInteractor != null)
-                m_TeleportInteractor.gameObject.SetActive(true);
-
-            if (m_RayInteractor != null)
-                m_RayInteractor.gameObject.SetActive(false);
-
-            if (m_NearFarInteractor != null && m_NearFarInteractor.selectionRegion.Value != NearFarInteractor.Region.Near)
-                m_NearFarInteractor.gameObject.SetActive(false);
-    
-            m_RayInteractorChanged?.Invoke(m_TeleportInteractor);
-        }
-
-        void OnCancelTeleport(InputAction.CallbackContext context)
-        {
-            // Do not deactivate the teleport interactor in this callback.
-            // We delay turning off the teleport interactor in this callback so that
-            // the teleport interactor has a chance to complete the teleport if needed.
-            // OnAfterInteractionEvents will handle deactivating its GameObject.
-            m_PostponedDeactivateTeleport = true;
-
-            if (m_RayInteractor != null)
-                m_RayInteractor.gameObject.SetActive(true);
-            
-            if (m_NearFarInteractor != null)
-                m_NearFarInteractor.gameObject.SetActive(true);
-
-            m_RayInteractorChanged?.Invoke(m_RayInteractor);
-        }
-        
-        void OnNearFarSelectionRegionChanged(NearFarInteractor.Region selectionRegion)
-        {
-            if (selectionRegion == NearFarInteractor.Region.Far ||
-                (selectionRegion == NearFarInteractor.Region.Near && !m_NearFarEnableTeleportDuringNearInteraction))
-                DisableTeleportActions();
-            else
-                UpdateLocomotionActions();
         }
 
         void OnStartLocomotion(InputAction.CallbackContext context)
@@ -350,9 +241,6 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
                 m_RayInteractor = null;
             }
 
-            if (m_TeleportInteractor != null)
-                m_TeleportInteractor.gameObject.SetActive(false);
-
             // Allow the actions to be refreshed when this component is re-enabled.
             // See comments in Start for why we wait until Start to enable/disable actions.
             if (m_StartCalled)
@@ -381,47 +269,24 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
 
         protected void Update()
         {
-            // Start the coroutine that executes code after the Update phase (during yield null).
-            // Since this behavior has the default execution order, it runs after the XRInteractionManager,
-            // so selection events have been finished by now this frame. This means that the teleport interactor
-            // has had a chance to process its select interaction event and teleport if needed.
-            if (m_PostponedDeactivateTeleport)
-            {
-                if (m_TeleportInteractor != null)
-                    m_TeleportInteractor.gameObject.SetActive(false);
 
-                m_PostponedDeactivateTeleport = false;
-            }
         }
 
         void UpdateLocomotionActions()
         {
-            // Disable/enable Teleport and Turn when Move is enabled/disabled.
-            SetEnabled(m_Move, m_SmoothMotionEnabled);
-            SetEnabled(m_TeleportMode, !m_SmoothMotionEnabled);
-            SetEnabled(m_TeleportModeCancel, !m_SmoothMotionEnabled);
-
             // Disable ability to turn when using continuous movement
             SetEnabled(m_Turn, !m_SmoothMotionEnabled && m_SmoothTurnEnabled);
             SetEnabled(m_SnapTurn, !m_SmoothMotionEnabled && !m_SmoothTurnEnabled);
         }
 
-        void DisableTeleportActions()
-        {
-            DisableAction(m_TeleportMode);
-            DisableAction(m_TeleportModeCancel);
-        }
-
         void DisableMoveAndTurnActions()
         {
-            DisableAction(m_Move);
             DisableAction(m_Turn);
             DisableAction(m_SnapTurn);
         }
 
         void DisableAllLocomotionActions()
         {
-            DisableTeleportActions();
             DisableMoveAndTurnActions();
         }
 
