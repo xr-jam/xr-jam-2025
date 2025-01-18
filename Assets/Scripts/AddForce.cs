@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AddForce : MonoBehaviour
 {
-    public float surfaceSpeed = 1f;  // Speed of surface movement
+    public TrashManager trashManager;
     private Rigidbody rb;
 
     private void Start()
@@ -18,8 +18,10 @@ public class AddForce : MonoBehaviour
         if (collision.gameObject.CompareTag("ConveyorBelt"))
         {
             // Apply force in the direction of the surface movement
-            Vector3 movementDirection = -transform.forward;  // Direction the belt moves
-            rb.velocity = movementDirection * surfaceSpeed * 2.05f;
+            // Do not change this back to -transform.forward, because that pushes the
+            // object where it is facing, not where the conveyor is facing
+            Vector3 movementDirection = -collision.gameObject.transform.forward;  // Direction the belt moves
+            rb.velocity = movementDirection * trashManager.trashSpeed;
         }
     }
 }
