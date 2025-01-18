@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2318206}
   - component: {fileID: 9536678}
   m_Layer: 0
-  m_Name: Cereal_2
+  m_Name: Cereal_2_paper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
