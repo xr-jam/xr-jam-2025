@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class TrashSpawner : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class TrashSpawner : MonoBehaviour
 
         obj.AddComponent<BoxCollider>();
         obj.AddComponent<Rigidbody>();
+        obj.AddComponent<XRGrabInteractable>();
 
         AddForce movement = obj.AddComponent<AddForce>();
         movement.surfaceSpeed = 1;
