@@ -18,7 +18,7 @@ public class MoveSurfaceWithMaterial : MonoBehaviour
     void Update()
     {
         // Update the texture offset based on the speed
-        textureOffset = new Vector2(0, Time.time * speed);
+        textureOffset = new Vector2(Time.time * speed, 0);
 
         // Apply the offset to the material's texture
         material.mainTextureOffset = textureOffset;

@@ -19,7 +19,7 @@ public class AddForce : MonoBehaviour
         {
             // Apply force in the direction of the surface movement
             Vector3 movementDirection = -transform.forward;  // Direction the belt moves
-            rb.velocity = movementDirection * surfaceSpeed;
+            rb.velocity = movementDirection * surfaceSpeed * 2.05f;
         }
     }
 }
