@@ -8,8 +8,10 @@ public class TrashCan : MonoBehaviour
     public TrashType.Category Category;
 
     [SerializeField]
-
     AudioManager audioManager;
+
+    [SerializeField]
+    ScreenFlash flash;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +31,16 @@ public class TrashCan : MonoBehaviour
             if (trash.Category == Category)
             {
                 audioManager.PlayRightSelectionSound();
+                flash.OnRightChoice();
             }
-            else audioManager.PlayWrongSelectionSound();
+            else
+            {
+                audioManager.PlayWrongSelectionSound();
+                flash.OnWrongChoice();
+            }
+
+
+            Destroy(other.gameObject);
         }
         else Debug.Log("not trash");
     }
