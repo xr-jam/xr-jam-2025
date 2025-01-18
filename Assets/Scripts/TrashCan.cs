@@ -6,10 +6,14 @@ public class TrashCan : MonoBehaviour
 {
     [SerializeField]
     public TrashType.Category Category;
+
+    [SerializeField]
+
+    AudioManager audioManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -24,9 +28,9 @@ public class TrashCan : MonoBehaviour
         {
             if (trash.Category == Category)
             {
-                Debug.Log("SAME TYPe");
+                audioManager.PlayRightSelectionSound();
             }
-            else Debug.Log("NOT SAME TYPe");
+            else audioManager.PlayWrongSelectionSound();
         }
         else Debug.Log("not trash");
     }

@@ -27,9 +27,7 @@ public class MoveSurfaceWithMaterial : MonoBehaviour
         speed = trashManager.trashSpeed;
 
         // Update the texture offset based on the speed
-        // Updated formula does not work with new scene at the moment
-        //textureOffset = new Vector2(previousOffset.y + (Time.time - previousTime) * (speed / 2) * (0.00670172f * (float)Math.Pow(speed, 3) - 0.0749536f * (float)Math.Pow(speed, 2) + 0.28797f * speed + 0.600272f), 0);
-        textureOffset = new Vector2(1 * Time.time, 0);
+        textureOffset = new Vector2(0, previousOffset.y + (Time.time - previousTime) * (speed / 2) * (0.00670172f * (float)Math.Pow(speed, 3) - 0.0749536f * (float)Math.Pow(speed, 2) + 0.28797f * speed + 0.600272f));
 
         // Apply the offset to the material's texture
         material.mainTextureOffset = textureOffset;
