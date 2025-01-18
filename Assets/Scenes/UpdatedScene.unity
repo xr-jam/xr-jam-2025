@@ -1044,6 +1044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 9f5a73b4be5ed504ab344eb6d3f83bb6, type: 2}
   speed: 1
+  trashManager: {fileID: 1801004777}
 --- !u!1001 &821077505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1167,6 +1168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 9f5a73b4be5ed504ab344eb6d3f83bb6, type: 2}
   speed: 1
+  trashManager: {fileID: 1801004777}
 --- !u!1001 &835206920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2186,6 +2188,7 @@ MonoBehaviour:
   - {fileID: 100000, guid: b8da0da0496258844a68c4759e5442e4, type: 3}
   - {fileID: 100018, guid: fedbd75f24167ac4390debcecd50ccbe, type: 3}
   - {fileID: 100000, guid: 4897e8b654a8a7f489e6681cfe3fb50a, type: 3}
+  trashManager: {fileID: 1801004777}
 --- !u!4 &1519976558
 Transform:
   m_ObjectHideFlags: 0
@@ -2854,9 +2857,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47362d691da8679438b42aead7bd6274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trashSpawners:
-  - {fileID: 1519976557}
+  trashSpawner: {fileID: 1519976557}
   timeToSpawn: 5
+  trashSpeed: 1
 --- !u!4 &1801004778
 Transform:
   m_ObjectHideFlags: 0
@@ -2990,7 +2993,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 9f5a73b4be5ed504ab344eb6d3f83bb6, type: 2}
-  speed: 1
+  speed: 0.2
+  trashManager: {fileID: 1801004777}
 --- !u!1001 &1862751890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3110,6 +3114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 9f5a73b4be5ed504ab344eb6d3f83bb6, type: 2}
   speed: 1
+  trashManager: {fileID: 1801004777}
 --- !u!1001 &1928201218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3229,6 +3234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 9f5a73b4be5ed504ab344eb6d3f83bb6, type: 2}
   speed: 1
+  trashManager: {fileID: 1801004777}
 --- !u!1 &2041135480
 GameObject:
   m_ObjectHideFlags: 0
