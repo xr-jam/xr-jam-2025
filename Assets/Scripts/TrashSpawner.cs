@@ -13,9 +13,8 @@ public class TrashSpawner : MonoBehaviour
 
         AddForce movement = obj.AddComponent<AddForce>();
         obj.AddComponent<BoxCollider>();
-        Rigidbody rigid = obj.AddComponent<Rigidbody>();
+        obj.AddComponent<Rigidbody>();
 
         movement.surfaceSpeed = 1;
-        movement.objectToMove = rigid;
     }
 }
