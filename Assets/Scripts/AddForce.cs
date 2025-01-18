@@ -1,8 +1,9 @@
 using UnityEngine;
+using System.Collections;
 
 public class AddForce : MonoBehaviour
 {
-    public float surfaceSpeed = 1f;  // Speed of surface movement
+    public TrashManager trashManager;
     private Rigidbody rb;
 
     private void Start()
@@ -10,6 +11,7 @@ public class AddForce : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         if (rb)
             rb.freezeRotation = true;
+        StartCoroutine(PrintLocationEvery60Seconds());
     }
 
     void OnCollisionStay(Collision collision)
@@ -18,8 +20,27 @@ public class AddForce : MonoBehaviour
         if (collision.gameObject.CompareTag("ConveyorBelt"))
         {
             // Apply force in the direction of the surface movement
-            Vector3 movementDirection = -transform.forward;  // Direction the belt moves
-            rb.velocity = movementDirection * surfaceSpeed;
+            // Do not change this back to -transform.forward, because that pushes the
+            // object where it is facing, not where the conveyor is facing
+            Vector3 movementDirection = -collision.gameObject.transform.forward;  // Direction the belt moves
+            rb.velocity = movementDirection * trashManager.trashSpeed;
+        }
+    }
+
+    IEnumerator PrintLocationEvery60Seconds()
+    {
+        while (true) // Infinite loop for continuous printing
+        {
+            if (this != null)
+            {
+                Debug.Log($"Location of {gameObject.name}: {gameObject.transform.position}");
+            }
+            else
+            {
+                Debug.LogWarning("Target is not assigned!");
+            }
+
+            yield return new WaitForSeconds(1f); // Wait for 60 seconds
         }
     }
 }

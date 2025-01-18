@@ -8,6 +8,8 @@ public class TrashSpawner : MonoBehaviour
     [SerializeField]
     List<GameObject> trashPrefabs;
 
+    public TrashManager trashManager;
+
 
     public void SpawnRandom()
     {
@@ -39,6 +41,6 @@ public class TrashSpawner : MonoBehaviour
         obj.AddComponent<XRGrabInteractable>();
 
         AddForce movement = obj.AddComponent<AddForce>();
-        movement.surfaceSpeed = 1;
+        movement.trashManager = trashManager;
     }
 }
