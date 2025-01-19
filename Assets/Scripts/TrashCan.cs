@@ -8,19 +8,10 @@ public class TrashCan : MonoBehaviour
     public TrashType.Category Category;
 
     [SerializeField]
-
     AudioManager audioManager;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField]
+    HpManager hpManager;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -30,7 +21,11 @@ public class TrashCan : MonoBehaviour
             {
                 audioManager.PlayRightSelectionSound();
             }
-            else audioManager.PlayWrongSelectionSound();
+            else 
+            {
+                hpManager.SubtractHp();
+                audioManager.PlayWrongSelectionSound();
+            }
         }
         else Debug.Log("not trash");
     }
