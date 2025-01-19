@@ -28,10 +28,7 @@ public class HpManager : MonoBehaviour
                 image.color = Color.black;
                 if(i <= 0)
                 {
-                    button.active = true;
-                    //Button b = button.GetComponent<Button>();
-                    
-                    manager.timeToSpawn = 9999999;
+                    ReloadScene();
                 }
                 break;
             }
