@@ -1661,7 +1661,7 @@ MonoBehaviour:
   Category: 4
   audioManager: {fileID: 24593223}
   flash: {fileID: 1728356407}
-  hpManager: {fileID: 0}
+  hpManager: {fileID: 1103239335}
 --- !u!65 &525310649
 BoxCollider:
   m_ObjectHideFlags: 0
