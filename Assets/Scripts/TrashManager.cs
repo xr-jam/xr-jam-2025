@@ -8,7 +8,7 @@ public class TrashManager : MonoBehaviour
     TrashSpawner trashSpawner;
 
     [SerializeField]
-    float timeToSpawn;
+    public float timeToSpawn;
     private float timeToSpawnDelta;
     public float trashSpeed = 1f;
     private float targetSpeedIncrease = 5f;
