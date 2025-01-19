@@ -457,7 +457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wrongSelectionSound: {fileID: 8300000, guid: 1f546d62ce7ef7647ae7eefafc279fda, type: 3}
-  rightSelectionSound: {fileID: 8300000, guid: 67d041af76bdfe94f9bd9f2e6b9e0372, type: 3}
+  rightSelectionSound: {fileID: 8300000, guid: 7b56a3d8e44782f41b51c046e3b198ae, type: 3}
   audioSource: {fileID: 24593222}
 --- !u!4 &24593224
 Transform:
