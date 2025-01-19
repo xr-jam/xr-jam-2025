@@ -13,16 +13,8 @@ public class TrashCan : MonoBehaviour
     [SerializeField]
     ScreenFlash flash;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField]
+    HpManager hpManager;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -33,13 +25,11 @@ public class TrashCan : MonoBehaviour
                 audioManager.PlayRightSelectionSound();
                 flash.OnRightChoice();
             }
-            else
+            else 
             {
+                hpManager.SubtractHp();
                 audioManager.PlayWrongSelectionSound();
-                flash.OnWrongChoice();
             }
-
-            Destroy(other.gameObject);
         }
         else Debug.Log("not trash");
     }
