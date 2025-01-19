@@ -29,7 +29,9 @@ public class TrashCan : MonoBehaviour
             {
                 hpManager.SubtractHp();
                 audioManager.PlayWrongSelectionSound();
+                flash.OnWrongChoice();
             }
+            Destroy(other.gameObject);
         }
         else Debug.Log("not trash");
     }
