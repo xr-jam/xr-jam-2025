@@ -22,12 +22,16 @@ Shader "UI/TestShader"
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+
+                UNITY_VERTEX_INPUT_INSTANCE_ID // For GPU instancing
             };
 
             struct v2f
             {
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
+
+                UNITY_VERTEX_OUTPUT_STEREO // For stereo output
             };
 
             float _FadeWidth;
@@ -36,7 +40,22 @@ Shader "UI/TestShader"
             v2f vert(appdata_t v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+
+                // Initialize for instancing and stereo rendering (no parameters needed)
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2f, o); // Proper initialization of output struct
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
+                // Transform the vertex position for VR
+                #ifdef UNITY_SINGLE_PASS_STEREO
+                    float4x4 unity_ObjectToClip = unity_StereoMatrixVP[unity_StereoEyeIndex];
+                #else
+                    float4x4 unity_ObjectToClip = UNITY_MATRIX_MVP;
+                #endif
+
+                o.vertex = mul(unity_ObjectToClip, v.vertex);
+
+                // Pass UV coordinates to the fragment shader
                 o.uv = v.uv;
                 return o;
             }
@@ -53,10 +72,8 @@ Shader "UI/TestShader"
                 // Invert the distance and create fade effect
                 float alpha = saturate((distToEdge - (1.0 - _FadeWidth)) / _FadeWidth);
 
-                return fixed4(_Color.rgb, _Color.a * alpha);
+                return fixed4(_Color.rgb, _Color.a * alpha); // Apply fade effect to the alpha
             }
-
-
             ENDCG
         }
     }

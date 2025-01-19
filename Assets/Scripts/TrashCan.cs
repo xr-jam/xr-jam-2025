@@ -39,7 +39,6 @@ public class TrashCan : MonoBehaviour
                 flash.OnWrongChoice();
             }
 
-
             Destroy(other.gameObject);
         }
         else Debug.Log("not trash");
