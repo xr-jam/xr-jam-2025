@@ -9,6 +9,7 @@ public class TrashType : MonoBehaviour
         Plastic,
         Paper,
         Glass,
-        Misc
+        Misc,
+        Wrong
     }
 }
