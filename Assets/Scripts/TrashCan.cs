@@ -11,6 +11,9 @@ public class TrashCan : MonoBehaviour
     AudioManager audioManager;
 
     [SerializeField]
+    ScreenFlash flash;
+
+    [SerializeField]
     HpManager hpManager;
 
     private void OnTriggerEnter(Collider other)
@@ -20,6 +23,7 @@ public class TrashCan : MonoBehaviour
             if (trash.Category == Category)
             {
                 audioManager.PlayRightSelectionSound();
+                flash.OnRightChoice();
             }
             else 
             {
